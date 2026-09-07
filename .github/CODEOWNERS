@@ -1,0 +1,21 @@
+# Code owners — who reviews what.
+#
+# BOOTSTRAP_PLACEHOLDER: replace @owner with a real GitHub username or team during bootstrap.
+# Preventive maintenance with no named owner is a calendar nobody reads.
+#
+# Later lines win, so the most specific rule for a path should come last.
+
+# Default owner for everything.
+*                       @owner
+
+# Standards and durable agent configuration are invariant across projects built from this template.
+# Changing them here rather than upstream is a decision worth a second pair of eyes.
+/docs/standards/        @owner
+/.agents/               @owner
+/AGENTS.md              @owner
+
+# Decisions are append-only; a superseding ADR should be reviewed, not merged quietly.
+/docs/decisions/        @owner
+
+# CI, supply chain, and the invariant checks.
+/.github/               @owner

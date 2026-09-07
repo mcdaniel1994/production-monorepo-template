@@ -1,0 +1,62 @@
+# Environment and secrets — never commit these.
+# See docs/standards/configuration.md
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# Dependencies
+node_modules/
+vendor/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Build output
+dist/
+build/
+out/
+target/
+*.egg-info/
+
+# Test and coverage artifacts
+coverage/
+.coverage
+htmlcov/
+.nyc_output/
+.pytest_cache/
+*.lcov
+
+# Tool caches
+.cache/
+.turbo/
+.parcel-cache/
+.ruff_cache/
+.mypy_cache/
+.gradle/
+
+# Local data — datasets and dumps do not belong in git.
+# Commit schemas, migrations, and small fixtures instead.
+.data/
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+
+# Logs
+*.log
+logs/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

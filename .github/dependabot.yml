@@ -1,0 +1,36 @@
+# Automated dependency updates.
+#
+# Only the github-actions ecosystem is configured, because it is the repository's only current
+# dependency. Everything else waits for a unit with a manifest; add that ecosystem when the
+# manifest lands.
+#
+# Adding a unit: copy the block below and change package-ecosystem and directory. For a project
+# with several units, consider Renovate instead — monorepo support is its main advantage, and
+# Dependabot's grouping degrades as the unit count rises.
+#
+# DO NOT enable auto-merge until CI's test job is real. It currently exits 0 unconditionally, so
+# auto-merge would be merging blind against a check that only looks like verification.
+#
+# Every dependency update is also a license event. docs/standards/compliance-licensing-standard.md
+# requires classification BEFORE adoption, so a bot PR that pulls in a new transitive dependency
+# still needs a human to check what it brought with it.
+#
+# PROJECT_TRIGGER [trigger: the first non-GitHub-Actions dependency manifest lands]: add its
+# package ecosystem and manifest directory below.
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # Keep the queue small enough that someone actually reads it.
+    open-pull-requests-limit: 5
+    groups:
+      # Patch and minor batched into one PR; majors arrive individually so they get read.
+      # Security updates bypass grouping and arrive immediately regardless.
+      actions-minor:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    commit-message:
+      prefix: "build"

@@ -1,0 +1,94 @@
+name: CI
+
+# This repository has no implementation unit, language, package manager, or task runner yet, so the
+# lint/test/build jobs remain explicit no-ops until the first unit chooses its toolchain.
+#
+# Two jobs are NOT placeholders and run for real:
+#   - secret-scan, because it is stack-independent and a secret committed to git history cannot
+#     be un-leaked.
+#   - invariants, which enforce link integrity and the AGENTS.md line budget while reporting
+#     structural and lifecycle-marker advisories.
+#
+# WARNING — do not enable branch protection on lint, test, or build until they are filled in.
+# They exit 0 unconditionally, so as required checks they would be permanently green and prove
+# nothing. The same applies to dependency auto-merge until the test job is real.
+#
+# Actions are pinned to commit SHAs per docs/standards/compliance-licensing-standard.md.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  secret-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # Full history: a secret introduced in an earlier commit on this branch is still leaked.
+          fetch-depth: 0
+
+      # NOTE: gitleaks-action requires a paid GITLEAKS_LICENSE for ORGANIZATION-owned repositories.
+      # It is free for repositories owned by a personal account. If this repository moves under an
+      # organization, add the license as a secret and uncomment it below, or swap in another
+      # scanner — otherwise the one job here that is real becomes the one that fails.
+      - name: Scan for committed secrets
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}  # required for org-owned repos
+
+  invariants:
+    name: Repository invariants
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      # Hard: broken internal links, and the AGENTS.md line budget declared inside that file.
+      # Advisory: empty directories, language neutrality, skills symlink, and lifecycle markers.
+      - name: Check structural invariants
+        run: python3 .github/scripts/check-invariants.py
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      # PROJECT_TRIGGER [trigger: the first implementation unit lands]: replace this no-op.
+      # Set up the project's toolchain and run its linter and format check for each unit.
+      - name: Lint (not configured)
+        run: echo "No linter configured yet. Replace this job before the first implementation unit lands."
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      # PROJECT_TRIGGER [trigger: the first implementation unit lands]: replace this no-op.
+      # Run each unit's tests. Coverage thresholds belong here, not in prose:
+      # see docs/standards/testing.md section 3.
+      - name: Test (not configured)
+        run: echo "No tests configured yet. Replace this job before the first implementation unit lands."
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      # PROJECT_TRIGGER [trigger: the first implementation unit lands]: replace this no-op.
+      # Build each unit and its container image. A change that passes tests but does not
+      # build is not done. Record build provenance here — see infra/README.md.
+      - name: Build (not configured)
+        run: echo "No build configured yet. Replace this job before the first implementation unit lands."

@@ -1,0 +1,33 @@
+name: Deploy
+
+# PROJECT_TRIGGER [trigger: the first production deployment]: replace this no-op workflow.
+#
+# No deployment platform is selected. Record the project choice as an ADR in docs/decisions/, add
+# the infrastructure definitions under infra/, then fill this in before the first production
+# deployment.
+#
+# It is manual-dispatch only so it cannot fire unnoticed before it is real.
+#
+# When implementing, keep to what makes the platform choice reversible:
+#   - Deploy the container images built by ci.yml; do not rebuild here.
+#   - Configuration and secrets come from the environment, never from this file.
+#     See docs/standards/configuration.md.
+#   - Gate production behind an environment with required reviewers.
+#   - Document the rollback procedure in docs/runbooks/ before the first production deploy —
+#     not after the first incident.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy (not configured)
+    runs-on: ubuntu-latest
+    steps:
+      - name: No deployment target chosen
+        run: |
+          echo "No deployment target has been chosen for this repository."
+          echo "Record the choice in docs/context/architecture.md and docs/decisions/."
