@@ -32,7 +32,7 @@ jobs:
     name: Secret scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # Full history: a secret introduced in an earlier commit on this branch is still leaked.
           fetch-depth: 0
@@ -51,7 +51,7 @@ jobs:
     name: Repository invariants
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # Hard: broken internal links, and the AGENTS.md line budget declared inside that file.
       # Advisory: empty directories, language neutrality, skills symlink, and lifecycle markers.
@@ -62,7 +62,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # PROJECT_TRIGGER [trigger: the first implementation unit lands]: replace this no-op.
       # Set up the project's toolchain and run its linter and format check for each unit.
@@ -73,7 +73,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # PROJECT_TRIGGER [trigger: the first implementation unit lands]: replace this no-op.
       # Run each unit's tests. Coverage thresholds belong here, not in prose:
@@ -85,7 +85,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # PROJECT_TRIGGER [trigger: the first implementation unit lands]: replace this no-op.
       # Build each unit and its container image. A change that passes tests but does not
